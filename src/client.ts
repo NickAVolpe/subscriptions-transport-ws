@@ -87,6 +87,7 @@ export class SubscriptionClient {
   private inactivityTimeoutId: any;
   private closedByUser: boolean;
   private wsImpl: any;
+  private headers: any;
   private wsProtocols: string | string[];
   private wasKeepAliveReceived: boolean;
   private tryReconnectTimeoutId: any;
@@ -100,6 +101,7 @@ export class SubscriptionClient {
     options?: ClientOptions,
     webSocketImpl?: any,
     webSocketProtocols?: string | string[],
+    headers?: any
   ) {
     const {
       connectionCallback = undefined,
@@ -135,6 +137,7 @@ export class SubscriptionClient {
     this.client = null;
     this.maxConnectTimeGenerator = this.createMaxConnectTimeGenerator();
     this.connectionParams = this.getConnectionParams(connectionParams);
+    this.headers = headers || null
 
     if (!this.lazy) {
       this.connect();
@@ -542,7 +545,20 @@ export class SubscriptionClient {
   }
 
   private connect() {
-    this.client = new this.wsImpl(this.url, this.wsProtocols);
+    console.log('---')
+    console.log('------')
+    console.log('---------')
+    console.log('Forked Version is running!!!')
+    console.log('---------')
+    console.log('------')
+    console.log('---')
+
+    if (this.headers) {
+      console.log('Forked Version Headers', this.headers)
+      this.client = new this.wsImpl(this.url, this.wsProtocols, this.headers);
+    } else {
+      this.client = new this.wsImpl(this.url, this.wsProtocols);
+    }
 
     this.checkMaxConnectTimeout();
 
